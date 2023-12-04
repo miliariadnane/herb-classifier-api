@@ -1,0 +1,11 @@
+# SERVER CONFIGURATION
+server:
+  port: 8080
+  error:
+    path: /herb-classifier/error
+    include-message: always
+    include-binding-errors: always
+    whitelabel:
+      enabled: false
+  servlet:
+    context-path: /api/${application.api.version}/herb-classifier/service

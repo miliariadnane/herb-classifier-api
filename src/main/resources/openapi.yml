@@ -1,0 +1,11 @@
+springdoc:
+  swagger-ui:
+    path: /doc/index.html
+    operationsSorter: alpha
+    tagsSorter: alpha
+    displayRequestDuration: true
+    syntaxHighlight:
+      theme: arta
+  api-docs:
+    path: /api-docs
+  show-actuator: false

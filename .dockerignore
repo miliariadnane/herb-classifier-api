@@ -1,0 +1,31 @@
+# Ignore Git files
+.git/
+.gitignore
+
+# Ignore build generated files
+target/
+!.mvn/wrapper/
+
+# Ignore logs
+*.log
+
+# Ignore temp files
+*.tmp
+
+# Ignore IDE files
+.idea/
+*.iml
+
+# Ignore OS files
+Thumbs.db
+.DS_Store
+
+# Ignore Maven wrapper
+mvnw
+mvnw.cmd
+
+# Allow jar files
+!target/*.jar
+
+# Allow native libs
+!target/native-libs/

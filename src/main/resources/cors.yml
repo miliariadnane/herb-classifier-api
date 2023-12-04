@@ -1,0 +1,6 @@
+# CORS CONFIGURATION
+cors:
+  allowed-origins: "localhost:5173"
+  allowed-methods: "*"
+  allowed-headers: "*"
+  exposed-headers: "*"

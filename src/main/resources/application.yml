@@ -1,0 +1,23 @@
+# APPLICATION
+application:
+  title: Herb (Coriander vs Parsley) Classifier API
+  version: @project.version@
+  api:
+    version: 'v1'
+
+# SPRING CONFIGURATION
+spring:
+  application:
+    name: herb-classifier
+  main:
+    web-application-type: servlet
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+  # SERVICES CONFIGURATION
+  config:
+    import:
+      - server.yml
+      - cors.yml
+      - openapi.yml
