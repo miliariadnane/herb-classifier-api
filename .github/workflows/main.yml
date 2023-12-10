@@ -4,11 +4,6 @@ on:
   push:
     branches: [ main ]
 
-env:
-  AWS_REGION: ${{ secrets.AWS_REGION }}
-  AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
-  AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -74,13 +69,13 @@ jobs:
       - name: Deploy to Elastic Beanstalk
         uses: einaregilsson/beanstalk-deploy@v21
         with:
-          aws_access_key: ${{ env.AWS_ACCESS_KEY }}
-          aws_secret_key: ${{ env.AWS_SECRET_KEY }}
+          aws_access_key: ${{ secrets..AWS_ACCESS_KEY }}
+          aws_secret_key: ${{ secrets..AWS_SECRET_KEY }}
           application_name: ${{ secrets.EB_APPLICATION_NAME }}
           environment_name: ${{ secrets.EB_ENVIRONMENT_NAME }}
           version_label: ${{ env.BUILD_VERSION }}
           version_description: ${{ github.SHA }}
-          region: ${{ env.AWS_REGION }}
+          region: ${{ secrets.AWS_REGION }}
           deployment_package: Dockerrun.aws.json
       - name: Send Slack Message
         run: >

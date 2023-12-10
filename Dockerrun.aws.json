@@ -3,7 +3,7 @@
   "containerDefinitions": [
     {
       "name": "herb-classifier-api",
-      "image": "miliariadnane/herb-classifier-api:03.12.2023.23.34.26",
+      "image": "miliariadnane/herb-classifier-api:latest",
       "essential": true,
       "memory": 512,
       "portMappings": [
