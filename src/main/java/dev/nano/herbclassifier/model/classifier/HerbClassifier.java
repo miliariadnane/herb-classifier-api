@@ -35,7 +35,7 @@ public class HerbClassifier {
 
     private static final int height = 28;
     private static final int width = 28;
-    private static final int channels = 1; // Single channel for grayscale images
+    private static final int channels = 3; // RGB
     private static final int outputNum = 2; // The number of possible outcomes (coriander or parsley)
     private static final int batchSize = 54; // How many examples to fetch with each step
     private static final int nEpochs = 50; // Number of training epochs (full passes of training data)

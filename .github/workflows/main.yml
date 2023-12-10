@@ -4,11 +4,6 @@ on:
   push:
     branches: [ main ]
 
-env:
-  AWS_REGION: ${{ secrets.AWS_REGION }}
-  AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
-  AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -18,12 +13,12 @@ jobs:
       - name: Slack commit message and sha
         run: >
           curl -X POST -H 'Content-type: application/json'
-          --data '{"text":":github: https://github.com/miliariadnane/herb-classifier-backend/commit/${{ github.sha }} - ${{ github.event.head_commit.message }}"}' 
+          --data '{"text":":github: https://github.com/miliariadnane/herb-classifier-api/commit/${{ github.sha }} - ${{ github.event.head_commit.message }}"}'
           ${{ secrets.SLACK_WEBHOOK_URL }}
       - name: Send Slack Message
         run: >
           curl -X POST -H 'Content-type: application/json'
-          --data '{"text":"Deployment started :progress_bar: :fingerscrossed:"}' 
+          --data '{"text":"Deployment started :progress_bar: :fingerscrossed:"}'
           ${{ secrets.SLACK_WEBHOOK_URL }}
 
       - uses: actions/setup-java@v3
@@ -37,8 +32,8 @@ jobs:
         run: echo "BUILD_VERSION=$(date '+%d.%m.%Y.%H.%M.%S')" >> $GITHUB_ENV
       - name: Send Slack Message
         run: >
-          curl -X POST -H 'Content-type: application/json' 
-          --data '{"text":":maven: Build project with Maven"}' 
+          curl -X POST -H 'Content-type: application/json'
+          --data '{"text":":maven: Build project with Maven"}'
           ${{ secrets.SLACK_WEBHOOK_URL }}
 
       - name: Login to Docker Hub
@@ -54,56 +49,36 @@ jobs:
         run: docker push miliariadnane/herb-classifier-api:${{ env.BUILD_VERSION }}
       - name: Send Slack Message
         run: >
-          curl -X POST -H 'Content-type: application/json' 
-          --data '{"text":":docker: Image tag:${{ env.BUILD_VERSION }} pushed to dockerhub in https://hub.docker.com/repository/docker/miliariadnane/herb-classifier-api"}' 
+          curl -X POST -H 'Content-type: application/json'
+          --data '{"text":":docker: Image tag:${{ env.BUILD_VERSION }} pushed to dockerhub in https://hub.docker.com/repository/docker/miliariadnane/herb-classifier-api"}'
           ${{ secrets.SLACK_WEBHOOK_URL }}
 
-      - name: Update Dockerrun.aws.json api image tag with new build number
-        run: |
-          echo "Dockerrun.aws.json before updating tag"
-          cat Dockerrun.aws.json
-          sed -i -E 's_(miliariadnane/herb-classifier-api:)([^"]*)_\1'${{ env.BUILD_VERSION }}'_' Dockerrun.aws.json
-          echo "Dockerrun.aws.json after updating tag"
-          cat Dockerrun.aws.json
-      - name: Send Slack Message
-        run: >
-          curl -X POST -H 'Content-type: application/json' 
-          --data '{"text":":aws: Starting deployment to Elastic Beanstalk"}' 
-          ${{ secrets.SLACK_WEBHOOK_URL }}
-
-      - name: Deploy to Elastic Beanstalk
-        uses: einaregilsson/beanstalk-deploy@v21
+      - uses: webfactory/ssh-agent@v0.8.0
         with:
-          aws_access_key: ${{ env.AWS_ACCESS_KEY }}
-          aws_secret_key: ${{ env.AWS_SECRET_KEY }}
-          application_name: ${{ secrets.EB_APPLICATION_NAME }}
-          environment_name: ${{ secrets.EB_ENVIRONMENT_NAME }}
-          version_label: ${{ env.BUILD_VERSION }}
-          version_description: ${{ github.SHA }}
-          region: ${{ env.AWS_REGION }}
-          deployment_package: Dockerrun.aws.json
-      - name: Send Slack Message
-        run: >
-          curl -X POST -H 'Content-type: application/json' 
-          --data '{"text":":githubloading: Committing to repo https://github.com/miliariadnane/herb-classifier-backend/"}' 
-          ${{ secrets.SLACK_WEBHOOK_URL }}
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Commit and push Dockerrun.aws.json
+      - name: Disable ssh strict host checking
         run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git add Dockerrun.aws.json
-          git commit -m "Update Dockerrun.aws.json docker image with new tag ${{ steps.build-version.outputs.BUILD_VERSION }}"
-          git push
+          echo "StrictHostKeyChecking no" >> ~/.ssh/config
+
+      - name: SSH and Deploy Docker image
+        run: |
+          docker -H=ssh://${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} pull miliariadnane/herb-classifier-api:${{ env.BUILD_VERSION }} || exit 1
+          CONTAINER_ID=$(docker -H=ssh://${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} ps -q --filter ancestor=miliariadnane/herb-classifier-api)
+          if [ "$CONTAINER_ID" != "" ]; then
+          docker -H=ssh://${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} stop $CONTAINER_ID || true
+          fi
+          docker -H=ssh://${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} run -d -p 80:80 miliariadnane/herb-classifier-api:${{ env.BUILD_VERSION }} || exit 1
+          EOF
       - name: Send Slack Message
         run: >
-          curl -X POST -H 'Content-type: application/json' 
-          --data '{"text":"Deployment and commit completed :github-check-mark: :party_blob: - http://herb-classifier.us-east-1.elasticbeanstalk.com/"}' 
+          curl -X POST -H 'Content-type: application/json'
+          --data '{"text":"Deployment and commit completed :github-check-mark: :party_blob: - http://130.61.32.252:32768/api/v1/herb-classifier/service/"}'
           ${{ secrets.SLACK_WEBHOOK_URL }}
 
       - name: Send Slack Message
         if: always()
         run: >
-          curl -X POST -H 'Content-type: application/json' 
-          --data '{"text":"Job Status ${{ job.status }}"}' 
+          curl -X POST -H 'Content-type: application/json'
+          --data '{"text":"Job Status ${{ job.status }}"}'
           ${{ secrets.SLACK_WEBHOOK_URL }}
