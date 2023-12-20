@@ -13,20 +13,13 @@ import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.dataset.api.preprocessor.ImagePreProcessingScaler;
 import org.nd4j.linalg.factory.Nd4j;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
 
 import static org.apache.http.entity.ContentType.IMAGE_GIF;
 import static org.apache.http.entity.ContentType.IMAGE_JPEG;
@@ -36,9 +29,9 @@ import static org.apache.http.entity.ContentType.IMAGE_PNG;
 @Slf4j
 @RequiredArgsConstructor
 public class ImageClassificationService {
-    private MultiLayerNetwork model;
-    private static final String MODEL_FILE_PATH = "model/herb_model.zip";
     private static final String[] LABELS = {"Coriander", "Parsley"};
+    private static final String MODEL_FILE_PATH = "model/herb_model.zip";
+    private MultiLayerNetwork model;
 
     @PostConstruct
     public void init() {
@@ -54,14 +47,17 @@ public class ImageClassificationService {
     }
 
     public String getHerbClassification(MultipartFile file) {
+        log.info("Validating file...");
         validateFile(file);
         try {
             INDArray image = convertFileToINDArray(file);
+            log.info("Classifying image...");
             String label = classifyImage(image);
+            log.info("Image classified as {}", label);
             return label;
         } catch (IOException e) {
-            log.error("Failed to upload file to AWS S3", e);
-            throw new IllegalStateException("Failed to upload file to AWS S3", e);
+            log.error("Failed to process image", e);
+            throw new IllegalStateException("Failed to process image", e);
         }
     }
 
@@ -72,19 +68,15 @@ public class ImageClassificationService {
         if (!Arrays.asList(IMAGE_JPEG.getMimeType(), IMAGE_PNG.getMimeType(), IMAGE_GIF.getMimeType()).contains(file.getContentType())) {
             throw new NotAnImageFileException("File is not an image");
         }
-    }
-
-    private Map<String, String> createMetadata(MultipartFile file) {
-        Map<String, String> metadata = new HashMap<>();
-        metadata.put("Content-Type", file.getContentType());
-        metadata.put("Content-Length", String.valueOf(file.getSize()));
-        return metadata;
+        log.info("File is valid");
     }
 
     private INDArray convertFileToINDArray(MultipartFile file) throws IOException {
+        log.info("Converting file to INDArray...");
         BufferedImage img = ImageIO.read(file.getInputStream());
-        INDArray image = new NativeImageLoader(28, 28, 1).asMatrix(img).reshape(1, 1, 28, 28);
+        INDArray image = new NativeImageLoader(28, 28, 3).asMatrix(img).reshape(1, 3, 28, 28);
         new ImagePreProcessingScaler(0, 1).transform(image);
+        log.info("File converted to INDArray");
         return image;
     }
 
