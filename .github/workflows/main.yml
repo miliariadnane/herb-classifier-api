@@ -62,9 +62,9 @@ jobs:
       - name: SSH and Deploy Docker image
         run: |
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} << EOF
-          docker pull -H miliariadnane/herb-classifier-api:${{ env.BUILD_VERSION }}
-          docker stop -H $(docker ps -q --filter ancestor=miliariadnane/herb-classifier-api) || true
-          docker run -H -d -p 80:80 miliariadnane/herb-classifier-api:${{ env.BUILD_VERSION }}
+          docker pull miliariadnane/herb-classifier-api:${{ env.BUILD_VERSION }}
+          docker stop $(docker ps -q --filter ancestor=miliariadnane/herb-classifier-api) || true
+          docker -H ssh://${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} run -d -p 80:80 miliariadnane/herb-classifier-api:${{ env.BUILD_VERSION }}
           EOF
       - name: Send Slack Message
         run: >
