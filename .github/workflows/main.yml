@@ -53,11 +53,12 @@ jobs:
           --data '{"text":":docker: Image tag:${{ env.BUILD_VERSION }} pushed to dockerhub in https://hub.docker.com/repository/docker/miliariadnane/herb-classifier-api"}'
           ${{ secrets.SLACK_WEBHOOK_URL }}
 
-      - name: Setup SSH
+      - name: Setup SSH connection
         run: |
           mkdir -p ~/.ssh/
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
 
       - name: SSH and Deploy Docker image
         run: |
