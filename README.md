@@ -1,65 +1,78 @@
-# Herb Classifier
+# 🌿🌱 Herb Classifier : Coriander VS Parsley  🌿🌱
 
-Herb Classifier is a Spring Boot application that classifies images of coriander and parsley herbs.
+<img src="src/main/resources/static/assets/images/hero.jpeg" width="400">
 
-## Table of Contents
+Herb Classifier is a Spring Boot application that classifies images of coriander and parsley herbs using a deep learning model built with DeepLearning4j.
+
+## 🖥️ Frontend Application
+
+* The frontend application is built with NextJs and TailwindCSS. Check the [website](https://https://herb-classifier.vercel.app/)
+* The frontend application repository is [here](https://github.com/bouazzaayyoub/herb-classifier-front)
+
+## 📚 Table of Contents
 
 - [Getting Started](#getting-started)
 - [Prerequisites](#prerequisites)
 - [Installing](#installing)
-- [Running the tests](#running-the-tests)
 - [Deployment](#deployment)
 - [Built With](#built-with)
-- [Versioning](#versioning)
 - [Authors](#authors)
 - [License](#license)
 - [Acknowledgments](#acknowledgments)
+- [Key Features](#key-features)
 
-## Getting Started
+## 🚀Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
-### Prerequisites
+### 📋Prerequisites
 
 - Java 17
 - Maven
 - Docker
 
-### Installing
+### 🔧Installing
 
 1. Clone the repository
 2. Navigate to the project directory
 3. Run `mvn clean install`
-
-## Running the tests
-
-Run `mvn test` to execute the unit tests.
+4. Build docker image `docker build -t DOCKER_USERNAME/herb-classifier-api:VERSION -f Dockerfile .
 
 ## Deployment
 
 This application is deployed using Docker. The CI/CD pipeline is configured in `.github/workflows/main.yml`.
 
-## Built With
+## 🛠️Built With
 
 - [Spring Boot](https://spring.io/projects/spring-boot) - The web framework used
 - [Maven](https://maven.apache.org/) - Dependency Management
-- [Docker](https://www.docker.com/) - Used for deployment
 - [DeepLearning4j](https://deeplearning4j.org/) - Used for image classification
+- [Docker](https://www.docker.com/) - Used for deployment
+- [Github Actions](https://docs.github.com/en/actions) - Used for CI/CD
+- [NextJs](https://nextjs.org/) - Used for the frontend application
+- [TailwindCSS](https://tailwindcss.com/) - Used for styling the frontend application
 
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning.
-
-## Authors
+## 👥Authors
 
 - **Adnane Miliari** - *Backend Engineer* - [miliariadnane](https://github.com/miliariadnane)
+- **Ayoub Bouazza** - *Frontend Engineer* - [bouazzaayyoub](https://github.com/bouazzaayyoub)
 
-## License
+## 📝 License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
-## Acknowledgments
+## 🌟Acknowledgments
 
 - Hat tip to anyone whose code was used
 - Inspiration
 - etc
+
+## Key Features
+
+- [x] Upload an image 🖼️
+- [x] Classify the image 🔍
+- [x] Display the classification result 📊
+- [x] NextJs frontend application
+    - [x] Home page 🏠
+    - [x] Upload page 📤
+    - [x] About page ℹ️
