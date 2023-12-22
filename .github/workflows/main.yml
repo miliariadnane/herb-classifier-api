@@ -53,16 +53,16 @@ jobs:
           --data '{"text":":docker: Image tag:${{ env.BUILD_VERSION }} pushed to dockerhub in https://hub.docker.com/repository/docker/miliariadnane/herb-classifier-api"}'
           ${{ secrets.SLACK_WEBHOOK_URL }}
 
-      - name: Setup SSH connection
+      - uses: webfactory/ssh-agent@v0.8.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Test SSH
         run: |
-          mkdir -p ~/.ssh/
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
+          docker -H=ssh://${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} ps
 
       - name: SSH and Deploy Docker image
         run: |
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} << EOF
           docker -H=ssh://${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} pull miliariadnane/herb-classifier-api:${{ env.BUILD_VERSION }} || exit 1
           CONTAINER_ID=\$(docker -H=ssh://${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} ps -q --filter ancestor=miliariadnane/herb-classifier-api)
           if [ "\$CONTAINER_ID" != "" ]; then
