@@ -69,7 +69,6 @@ jobs:
           docker -H=ssh://${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} stop $CONTAINER_ID || true
           fi
           docker -H=ssh://${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} run -d -p 80:80 miliariadnane/herb-classifier-api:${{ env.BUILD_VERSION }} || exit 1
-          EOF
       - name: Send Slack Message
         run: >
           curl -X POST -H 'Content-type: application/json'
