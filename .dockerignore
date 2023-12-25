@@ -5,6 +5,7 @@
 # Ignore build generated files
 target/
 !.mvn/wrapper/
+!target/classes/static
 
 # Ignore logs
 *.log
