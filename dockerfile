@@ -21,7 +21,7 @@ ENV JAVA_TOOL_OPTIONS="-Djava.library.path=/opt/libs $JAVA_TOOL_OPTIONS"
 
 # Copy model files
 COPY src/main/resources/model /app/model
-COPY src/main/resources/static /app/static
+COPY src/main/resources/static /resources/static
 
 # Check the contents of `/app/model`
 RUN ls -l /app/model
