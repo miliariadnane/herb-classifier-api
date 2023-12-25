@@ -4,8 +4,12 @@ Herb Classifier is a Spring Boot application that classifies images of coriander
 
 ## 🖥️ Frontend Application
 
-* The frontend application is built with NextJs and TailwindCSS. Check the [website](https://https://herb-classifier.vercel.app/)
+* The frontend application is built with NextJs and TailwindCSS. Check the [website](https://herb-classifier.vercel.app/)
 * The frontend application repository is [here](https://github.com/bouazzaayyoub/herb-classifier-front)
+
+## 📐 Diagram of the application architecture
+
+![Diagram](docs/diagram/herb-classifier-diagram.png)
 
 ## 📚 Table of Contents
 
@@ -14,7 +18,7 @@ Herb Classifier is a Spring Boot application that classifies images of coriander
 - [Installing](#-installing)
 - [Deployment](#-deployment)
 - [Built With](#-built-with)
-- [Authors](#-authors)
+- [Owner and Contributors](#-owner-and-contributors)
 - [License](#-license)
 - [Support](#-support)
 - [Key Features](#-key-features)
@@ -50,10 +54,12 @@ This application is deployed using Docker. The CI/CD pipeline is configured in `
 - [NextJs](https://nextjs.org/) - Used for the frontend application
 - [TailwindCSS](https://tailwindcss.com/) - Used for styling the frontend application
 
-## 👥 Authors
+## 👥 Owner and Contributors
 
-- **Adnane Miliari** - *Backend Engineer* - [miliariadnane](https://github.com/miliariadnane)
-- **Ayoub Bouazza** - *Frontend Engineer* - [bouazzaayyoub](https://github.com/bouazzaayyoub)
+- **_`Owner`_** : **Adnane Miliari** - *Backend Engineer* - [miliariadnane](https://github.com/miliariadnane)
+- **_`Contributors`_** : 
+  - **Ayoub Bouazza 🎨** - *Frontend Engineer 🎨* - [bouazzaayyoub](https://github.com/bouazzaayyoub)
+  - **Mohammed Daoudi** - *DevOps Engineer 🐬* - [Iduoad](https://github.com/Iduoad)
 
 ## 📝 License
 
