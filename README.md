@@ -58,7 +58,7 @@ This application is deployed using Docker. The CI/CD pipeline is configured in `
 
 - **_`Owner`_** : **Adnane Miliari** - *Backend Engineer* - [miliariadnane](https://github.com/miliariadnane)
 - **_`Contributors`_** : 
-  - **Ayoub Bouazza 🎨** - *Frontend Engineer 🎨* - [bouazzaayyoub](https://github.com/bouazzaayyoub)
+  - **Ayoub Bouazza** - *Frontend Engineer 🎨* - [bouazzaayyoub](https://github.com/bouazzaayyoub)
   - **Mohammed Daoudi** - *DevOps Engineer 🐬* - [Iduoad](https://github.com/Iduoad)
 
 ## 📝 License
