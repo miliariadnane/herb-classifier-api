@@ -29,8 +29,9 @@ import static org.apache.http.entity.ContentType.IMAGE_PNG;
 @Slf4j
 @RequiredArgsConstructor
 public class ImageClassificationService {
-    private static final String[] LABELS = {"Coriander", "Parsley"};
+    private static final String[] LABELS = {"Coriander", "Parsley", "Not sure"};
     private static final String MODEL_FILE_PATH = "model/herb_model.zip";
+    private static final double CERTAINTY_THRESHOLD = 0.9;
     private MultiLayerNetwork model;
 
     @PostConstruct
@@ -81,7 +82,13 @@ public class ImageClassificationService {
     }
 
     private String classifyImage(INDArray image) {
-        long classIdx = Nd4j.argMax(model.output(image), 1).getLong(0);
+        INDArray output = model.output(image);
+        long classIdx = Nd4j.argMax(output, 1).getLong(0);
+
+        if (output.getDouble(classIdx) < CERTAINTY_THRESHOLD) {
+            return LABELS[2];
+        }
+
         return LABELS[(int) classIdx];
     }
 }

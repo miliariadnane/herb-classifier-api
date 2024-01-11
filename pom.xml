@@ -59,11 +59,6 @@
             <version>${deeplearning4j.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.deeplearning4j</groupId>
-            <artifactId>deeplearning4j-ui</artifactId>
-            <version>${deeplearning4j.version}</version>
-        </dependency>
-        <dependency>
             <groupId>org.nd4j</groupId>
             <artifactId>nd4j-native-platform</artifactId>
             <version>${deeplearning4j.version}</version>

@@ -15,8 +15,6 @@ import org.deeplearning4j.nn.conf.layers.OutputLayer;
 import org.deeplearning4j.nn.conf.layers.SubsamplingLayer;
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
 import org.deeplearning4j.nn.weights.WeightInit;
-import org.deeplearning4j.ui.api.UIServer;
-import org.deeplearning4j.ui.model.storage.InMemoryStatsStorage;
 import org.deeplearning4j.util.ModelSerializer;
 import org.nd4j.evaluation.classification.Evaluation;
 import org.nd4j.linalg.activations.Activation;
@@ -36,9 +34,9 @@ public class HerbClassifier {
     private static final int height = 28;
     private static final int width = 28;
     private static final int channels = 3; // RGB
-    private static final int outputNum = 2; // The number of possible outcomes (coriander or parsley)
+    private static final int outputNum = 2; // The number of possible outcomes ("coriander", "parsley" or "not sure")
     private static final int batchSize = 54; // How many examples to fetch with each step
-    private static final int nEpochs = 50; // Number of training epochs (full passes of training data)
+    private static final int nEpochs = 50; // Number of times that the learning algorithm will work through the entire training dataset.
     private static final int seed = 1234;
     private static final Random randomGenNum = new Random(seed);
     private static final String dataPath = "src/main/resources/dataset";
@@ -101,13 +99,6 @@ public class HerbClassifier {
 
         MultiLayerNetwork model = new MultiLayerNetwork(conf);
         model.init();
-
-        // Initialize the user interface backend (used to plot the loss function score during training)
-        UIServer uiServer = UIServer.getInstance();
-        // Configure where the network information (gradients, score vs. time etc) is to be stored. Here: store in memory.
-        InMemoryStatsStorage statsStorage = new InMemoryStatsStorage();
-        // Attach the StatsStorage instance to the UI: this allows the contents of the StatsStorage to be visualized
-        uiServer.attach(statsStorage);
 
         log.info("Train model....");
         for (int i = 0; i < nEpochs; i++) { // Increased the number of epochs 1 / 10 / 20 / 30 / 50
