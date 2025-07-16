@@ -56,17 +56,17 @@
         <dependency>
             <groupId>org.deeplearning4j</groupId>
             <artifactId>deeplearning4j-core</artifactId>
-            <version>${deeplearning4j.version}</version>
+            <version>1.0.0-M2.1</version>
         </dependency>
         <dependency>
             <groupId>org.nd4j</groupId>
             <artifactId>nd4j-native-platform</artifactId>
-            <version>${deeplearning4j.version}</version>
+            <version>1.0.0-M2</version>
         </dependency>
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-            <version>${springdoc-openapi.version}</version>
+            <version>2.7.0-RC1</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.yaml</groupId>
@@ -77,7 +77,7 @@
         <dependency>
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-java-sdk</artifactId>
-            <version>${sdk-aws.version}</version>
+            <version>1.12.781</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
